@@ -1,0 +1,6 @@
+@AstronomyStellarMapsCreator.Server_HostAddress = http://localhost:5004
+
+GET {{AstronomyStellarMapsCreator.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
