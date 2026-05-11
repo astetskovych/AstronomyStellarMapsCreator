@@ -3,15 +3,17 @@ import { useState } from "react";
 type Props = {
     onOpenGridModal: () => void;
     onOpenAbout: () => void;
+    onOpenConstellations: () => void;
+    onOpenLoad: () => void;
 };
 
-export default function TopMenu({ onOpenGridModal, onOpenAbout }: Props) {
+export default function TopMenu({ onOpenGridModal, onOpenAbout, onOpenConstellations, onOpenLoad }: Props) {
     const [openMenu, setOpenMenu] = useState<string | null>(null);
 
     const menus = [
         {
             label: "File",
-            items: ["Open", "Save", "Exit"],
+            items: ["Load", "Save", "Exit"],
         },
         {
             label: "View",
@@ -50,7 +52,12 @@ export default function TopMenu({ onOpenGridModal, onOpenAbout }: Props) {
                                             if (item === "About") {
                                                 onOpenAbout();
                                             }
-
+                                            if (item === "Constellations") {
+                                                onOpenConstellations();
+                                            }
+                                            if (item === "Load") {
+                                                onOpenLoad();
+                                            }
                                             console.log(menu.label, item);
                                             setOpenMenu(null);
                                         }}
@@ -81,8 +88,8 @@ const styles: Record<string, React.CSSProperties> = {
 
     bar: {
         display: "flex",
-        gap: "10px",
-        padding: "6px 10px",
+        gap: "100px",
+        padding: "10px 10px",
         background: "transparent",
         pointerEvents: "auto",
         fontFamily: "monospace",
@@ -97,7 +104,7 @@ const styles: Record<string, React.CSSProperties> = {
         color: "#00ff00",
         border: "1px solid #00ff00",
         padding: "6px 12px",
-        cursor: "pointer",
+        cursor: "crosshair",
         fontFamily: "monospace",
     },
 

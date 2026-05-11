@@ -10,8 +10,16 @@ type NavState = {
     offsetY: number;
 };
 
+type Props = {
+    gridType: string;
+    constellations: {
+        borders: boolean;
+        names: boolean;
+        figures: boolean;
+    };
+};
 
-export default function SkyCanvas({ gridType }: { gridType: string }) {
+export default function SkyCanvas({ gridType, constellations }: Props) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navRef = useRef<NavState>({
         scale: 1,
@@ -105,6 +113,18 @@ export default function SkyCanvas({ gridType }: { gridType: string }) {
                 drawEquatorialLabels(ctx, canvas.clientWidth, canvas.clientHeight);
                 drawMapBorder(ctx, canvas.clientWidth, canvas.clientHeight);
                 //ctx.restore();
+            }
+
+            if (constellations.borders) {
+                // draw constellation borders
+            }
+
+            if (constellations.names) {
+                // draw constellation names
+            }
+
+            if (constellations.figures) {
+                // draw constellation lines
             }
 
             for (const star of stars) {
