@@ -24,5 +24,10 @@ namespace AstronomyStellarMapsCreator.Server.Common
 
             return stars;
         }
+
+        public I40CatalogDat GetStar(int id)
+        {
+            return _context.I40CatalogDats.Where(s => s.Id == id).FirstOrDefault();
+        }
     }
 }

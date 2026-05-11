@@ -10,7 +10,8 @@ type NavState = {
     offsetY: number;
 };
 
-export default function SkyCanvas() {
+
+export default function SkyCanvas({ gridType }: { gridType: string }) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navRef = useRef<NavState>({
         scale: 1,
@@ -22,6 +23,7 @@ export default function SkyCanvas() {
 
     const [stars, setStars] = useState<Star[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedStarDetails, setSelectedStarDetails] = useState<Record<string, unknown> | null>(null);
 
     // fetch
     useEffect(() => {
@@ -91,6 +93,20 @@ export default function SkyCanvas() {
                 offsetY * dpr
             );
 
+            if (gridType === "Equatorial") {
+                drawEquatorialGrid(
+                    ctx,
+                    canvas.clientWidth,
+                    canvas.clientHeight
+                );
+                // draw labels WITHOUT transform
+                //ctx.save();
+                //ctx.setTransform(1, 0, 0, 1, 0, 0);
+                drawEquatorialLabels(ctx, canvas.clientWidth, canvas.clientHeight);
+                drawMapBorder(ctx, canvas.clientWidth, canvas.clientHeight);
+                //ctx.restore();
+            }
+
             for (const star of stars) {
                 const { x, y } = project(
                     star.ra,
@@ -111,7 +127,7 @@ export default function SkyCanvas() {
                 if (selectedStarRef.current?.id === star.id) {
                     ctx.beginPath();
                     ctx.arc(x, y, r + 4, 0, Math.PI * 2);
-                    ctx.strokeStyle = "yellow";
+                    ctx.strokeStyle = "#00ff00";
                     ctx.lineWidth = 1;
                     ctx.stroke();
                 }
@@ -152,6 +168,18 @@ export default function SkyCanvas() {
             );
 
             selectedStarRef.current = star;
+            if (!star) {
+                setSelectedStarDetails(null);
+            }
+            if (star) {
+                fetch(`/api/stars/${star.id}`)
+                    .then(res => {
+                        if (!res.ok) throw new Error("Failed to fetch star details");
+                        return res.json() as Promise<Record<string, unknown>>;
+                    })
+                    .then(setSelectedStarDetails)
+                    .catch(console.error);
+            }
 
             requestAnimationFrame(render);
         }
@@ -253,6 +281,8 @@ export default function SkyCanvas() {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
 
+
+
     // LOADING
     if (loading) {
         return (
@@ -263,14 +293,118 @@ export default function SkyCanvas() {
     }
 
     return (
-        <canvas
-            ref={canvasRef}
-            style={{
-                width: "100%",
-                height: "100%",
-                display: "block",
-                background: "black",
-            }}
-        />
+        <div style={{ width: "100%", height: "100%", position: "relative" }}>
+            <canvas
+                ref={canvasRef}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "block",
+                    background: "black",
+                }}
+            />
+
+            {selectedStarDetails && (
+                <div
+                    style={{
+                        position: "absolute",
+                        top: 20,
+                        left: 20,
+                        color: "#00ff00",
+                        background: "rgba(0,0,0,0.5)",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        fontSize: "14px",
+                        maxWidth: "250px"
+                    }}
+                >
+                    {Object.entries(selectedStarDetails).map(([key, value]) => (
+                        <div key={key}>
+                            <b>{key}:</b> {String(value)}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
     );
+}
+
+function drawEquatorialGrid(
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number
+) {
+    ctx.strokeStyle = "rgba(0, 255, 0, 0.25)";
+    ctx.lineWidth = 1;
+
+    // RA lines (vertical)
+    for (let ra = 0; ra < 360; ra += 15) {
+        const x = (ra / 360) * width;
+
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+    }
+
+    // Dec lines (horizontal)
+    for (let dec = -90; dec <= 90; dec += 15) {
+        const y = ((90 - dec) / 180) * height;
+
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+    }
+}
+
+function drawEquatorialLabels(
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number
+) {
+    ctx.fillStyle = "#00ff00";
+    ctx.font = "12px monospace";
+
+    // -------------------------
+    // RA labels (top & bottom)
+    // -------------------------
+    for (let ra = 0; ra < 360; ra += 30) {
+        const x = (ra / 360) * width;
+
+        const hours = Math.floor(ra / 15); // 360° = 24h
+        const label = `${hours}h`;
+
+        // top
+        ctx.fillText(label, x + 2, -10);
+
+        // bottom
+        ctx.fillText(label, x + 2, height + 15);
+    }
+
+    // -------------------------
+    // Dec labels (left & right)
+    // -------------------------
+    for (let dec = -60; dec <= 60; dec += 30) {
+        const y = ((90 - dec) / 180) * height;
+
+        const label = `${dec > 0 ? "+" : ""}${dec}°`;
+
+        // left
+        ctx.fillText(label, -30, y - 2);
+
+        // right
+        ctx.fillText(label, width + 4, y - 2);
+    }
+}
+
+function drawMapBorder(
+    ctx: CanvasRenderingContext2D,
+    width: number,
+    height: number
+) {
+    ctx.strokeStyle = "#00ff00";
+    ctx.lineWidth = 2; // 👈 thicker than grid
+
+    ctx.strokeRect(0, 0, width, height);
 }

@@ -19,9 +19,19 @@ namespace AstronomyStellarMapsCreator.Server.Controllers
         [HttpGet]
         public ActionResult<List<StarDTO>> GetStars()
         {
-            //Response.Headers.Add("X-Test", "CORS-CHECK");
             var stars =  _repository.GetStars().ToList();
             return Ok(stars);
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<StarDTO> GetStar(int id)
+        {
+            var star = _repository.GetStar(id);
+
+            if (star == null)
+                return NotFound();
+
+            return Ok(star);
         }
     }
 }
