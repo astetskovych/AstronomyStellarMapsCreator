@@ -5,6 +5,7 @@ import GridModal from "./components/GridModal";
 import AboutModal from "./components/AboutModal";
 import ConstellationsModal from "./components/ConstellationsModal";
 import LoadModal from "./components/LoadModal";
+import ExitModal from "./components/ExitModal";
 
 export default function App() {
     const [gridType, setGridType] = useState<string>("Equatorial");
@@ -17,12 +18,18 @@ export default function App() {
         figures: false
     });
     const [loadOpen, setLoadOpen] = useState(false);
+    const [exitModalOpen, setExitModalOpen] = useState(false);
+
+    const handleExit = () => {
+        window.location.href = "about:blank";
+    };
     return <div style={{ width: "100%", aspectRatio: "2 / 1" }}>
                 <TopMenu
                     onOpenGridModal={() => setGridModalOpen(true)}
                     onOpenAbout={() => setAboutOpen(true)}
                     onOpenConstellations={() => setConstModalOpen(true)}
                     onOpenLoad={() => setLoadOpen(true)}
+                    onOpenExit={() => setExitModalOpen(true)}
                 />
                 <ConstellationsModal
                     open={constModalOpen}
@@ -41,6 +48,11 @@ export default function App() {
                 <LoadModal
                     open={loadOpen}
                     onClose={() => setLoadOpen(false)}
+                />
+                <ExitModal
+                    open={exitModalOpen}
+                    onCancel={() => setExitModalOpen(false)}
+                    onConfirm={handleExit}
                 />
                 <SkyCanvas
                     gridType={gridType}
