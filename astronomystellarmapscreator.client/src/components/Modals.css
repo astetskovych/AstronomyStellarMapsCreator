@@ -12,7 +12,6 @@
     z-index: 100;
 }
 
-/* Modal */
 .modal {
     background: black;
     border: 1px solid #00ff00;
@@ -22,6 +21,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    text-align: center;
 }
 
 /* Title */
@@ -34,6 +34,13 @@
 .text {
     display: flex;
     flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.description {
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #00ff00;
 }
 
 /* Checkbox row (like "item") */
@@ -46,11 +53,14 @@
     gap: 8px;
 }
 
-    /* Checkbox input */
     .checkbox input {
         accent-color: #00ff00; /* modern browsers */
         cursor: pointer;
     }
+
+        .checkbox input:hover {
+            box-shadow: 0 0 10px #00ff00;
+        }
 
 /* Button */
 .applyButton {

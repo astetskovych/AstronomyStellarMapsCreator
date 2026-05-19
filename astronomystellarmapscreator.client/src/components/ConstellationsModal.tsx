@@ -33,7 +33,6 @@ export default function ConstellationsModal({ open, onClose, onApply }: Props) {
         <div className="overlay" onClick={onClose}>
             <div className="modal" onClick={e => e.stopPropagation()}>
                 <h3 className="title">Constellations</h3>
-
                 <div className="text">
                     <label className="checkbox">
                         <input
@@ -43,7 +42,6 @@ export default function ConstellationsModal({ open, onClose, onApply }: Props) {
                         />
                         Constellation borders
                     </label>
-
                     <label className="checkbox">
                         <input
                             type="checkbox"
@@ -52,7 +50,6 @@ export default function ConstellationsModal({ open, onClose, onApply }: Props) {
                         />
                         Constellation names
                     </label>
-
                     <label className="checkbox">
                         <input
                             type="checkbox"
@@ -62,7 +59,6 @@ export default function ConstellationsModal({ open, onClose, onApply }: Props) {
                         Constellation figures
                     </label>
                 </div>
-
                 <button
                     className="applyButton"
                     onClick={() => {

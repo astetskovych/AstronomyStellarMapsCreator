@@ -334,8 +334,10 @@ export default function SkyCanvas({ gridType, constellations }: Props) {
                         background: "rgba(0,0,0,0.5)",
                         padding: "10px",
                         borderRadius: "8px",
+                        //borderColor: "#00ff00",
                         fontSize: "14px",
-                        maxWidth: "250px"
+                        maxWidth: "250px",
+                        border: "1px solid rgb(0, 255, 0)"
                     }}
                 >
                     {Object.entries(selectedStarDetails).map(([key, value]) => (
@@ -424,7 +426,7 @@ function drawMapBorder(
     height: number
 ) {
     ctx.strokeStyle = "#00ff00";
-    ctx.lineWidth = 2; // 👈 thicker than grid
+    ctx.lineWidth = 2;
 
     ctx.strokeRect(0, 0, width, height);
 }
