@@ -1,7 +1,4 @@
-﻿using AstronomyStellarMapsCreator.Server.DTOs;
-using AstronomyStellarMapsCreator.Server.Models;
-
-namespace AstronomyStellarMapsCreator.Server.Common
+﻿namespace AstronomyStellarMapsCreator.Server.Common
 {
     public class Repository : IRepository
     {

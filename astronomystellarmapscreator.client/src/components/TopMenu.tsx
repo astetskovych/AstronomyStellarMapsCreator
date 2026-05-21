@@ -6,9 +6,15 @@ type Props = {
     onOpenConstellations: () => void;
     onOpenLoad: () => void;
     onOpenExit: () => void;
+    onOpenHelp: () => void;
 };
 
-export default function TopMenu({ onOpenGridModal, onOpenAbout, onOpenConstellations, onOpenLoad, onOpenExit }: Props) {
+export default function TopMenu({ onOpenGridModal,
+                                  onOpenAbout,
+                                  onOpenConstellations,
+                                  onOpenLoad,
+                                  onOpenExit,
+                                  onOpenHelp }: Props) {
     const [openMenu, setOpenMenu] = useState<string | null>(null);
 
     const menus = [
@@ -61,6 +67,9 @@ export default function TopMenu({ onOpenGridModal, onOpenAbout, onOpenConstellat
                                             }
                                             if (item === "Exit") {
                                                 onOpenExit();
+                                            }
+                                            if (item === "Help") {
+                                                onOpenHelp();
                                             }
                                             console.log(menu.label, item);
                                             setOpenMenu(null);

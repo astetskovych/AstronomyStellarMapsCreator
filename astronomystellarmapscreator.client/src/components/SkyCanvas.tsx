@@ -17,9 +17,10 @@ type Props = {
         names: boolean;
         figures: boolean;
     };
+    setHelpOpen: (open: boolean) => void;
 };
 
-export default function SkyCanvas({ gridType, constellations }: Props) {
+export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Props) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navRef = useRef<NavState>({
         scale: 1,
@@ -301,6 +302,17 @@ export default function SkyCanvas({ gridType, constellations }: Props) {
         return () => window.removeEventListener("keydown", handleKeyDown);
     }, []);
 
+    // help modal
+    useEffect(() => {
+        const handleKey = (e: KeyboardEvent) => {
+            if (e.key.toLowerCase() === "h") {
+                setHelpOpen(true);
+            }
+        };
+
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, []);
 
 
     // LOADING
