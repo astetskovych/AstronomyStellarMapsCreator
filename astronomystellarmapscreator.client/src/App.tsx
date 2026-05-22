@@ -7,6 +7,7 @@ import ConstellationsModal from "./components/ConstellationsModal";
 import LoadModal from "./components/LoadModal";
 import ExitModal from "./components/ExitModal";
 import HelpModal from "./components/HelpModal";
+import SaveModal from "./components/SaveModal";
 
 export default function App() {
     const [gridType, setGridType] = useState<string>("Equatorial");
@@ -21,6 +22,7 @@ export default function App() {
     const [loadOpen, setLoadOpen] = useState(false);
     const [exitModalOpen, setExitModalOpen] = useState(false);
     const [helpOpen, setHelpOpen] = useState(false);
+    const [saveOpen, setSaveOpen] = useState(false);
 
     const handleExit = () => {
         window.location.href = "about:blank";
@@ -32,7 +34,8 @@ export default function App() {
                     onOpenConstellations={() => setConstModalOpen(true)}
                     onOpenLoad={() => setLoadOpen(true)}
                     onOpenExit={() => setExitModalOpen(true)}
-                    onOpenHelp={() => setHelpOpen(true)}
+            onOpenHelp={() => setHelpOpen(true)}
+            onOpenSave={() => setSaveOpen(true)}
                 />
                 <ConstellationsModal
                     open={constModalOpen}
@@ -61,6 +64,12 @@ export default function App() {
                     open={helpOpen}
                     onClose={() => setHelpOpen(false)}
                 />
+                <SaveModal
+                    isOpen={saveOpen}
+                    onClose={() => setSaveOpen(false)}
+                    onCreate={(data) => {
+                        console.log("EXPORT CONFIG:", data);
+                    }}/>
                 <SkyCanvas
                     gridType={gridType}
                     constellations={constellations}

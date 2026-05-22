@@ -23,7 +23,7 @@ export default function ExitModal({ open, onCancel, onConfirm }: Props) {
     return (
         <div className="overlay" onClick={onCancel}>
             <div className="modal" onClick={e => e.stopPropagation()}>
-                <h3 className="title">Exit Application</h3>
+                <h2 className="title">Exit Application</h2>
 
                 <div className="text">
                     Are you sure you want to exit?
@@ -44,7 +44,6 @@ export default function ExitModal({ open, onCancel, onConfirm }: Props) {
                         Cancel
                     </button>
                 </div>
-
                 <div className="hint">ESC = Cancel</div>
             </div>
         </div>

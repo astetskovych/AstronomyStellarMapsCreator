@@ -141,3 +141,49 @@
         .helpTable tr:hover {
             background: #001a00;
         }
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+select,
+input {
+    background: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 5px;
+    font-family: monospace;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.previewBtn,
+.createBtn {
+    background: black;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    padding: 6px 10px;
+    cursor: crosshair;
+}
+
+.colorPicker {
+    display: flex;
+    gap: 8px;
+}
+
+.swatch {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #00ff00;
+    cursor: crosshair;
+}
+
+    .swatch.active {
+        outline: 2px solid #00ff00;
+    }

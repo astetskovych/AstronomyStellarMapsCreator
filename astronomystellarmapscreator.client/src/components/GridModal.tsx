@@ -47,8 +47,7 @@ export default function GridModal({ open, onClose, onSelect }: Props) {
     return (
         <div className = "overlay" onClick = { onClose } >
             <div className= "modal" onClick={e => e.stopPropagation()}>
-                <h3 className= "title">Select Grid</h3>
-
+                <h2 className= "title">Select Grid</h2>
                 {options.map((opt, i) => (
                     <div
                         key={opt}
@@ -62,7 +61,6 @@ export default function GridModal({ open, onClose, onSelect }: Props) {
                         {opt}
                     </div>
                 ))}
-
                 <div className= "hint">
                     ↑ ↓ Navigate • Enter Select • ESC Close
                 </div>

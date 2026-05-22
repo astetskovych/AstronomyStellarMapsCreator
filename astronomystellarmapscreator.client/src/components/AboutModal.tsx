@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import "./Modals.css"; 
 
-
 type Props = {
     open: boolean;
     onClose: () => void;
@@ -26,8 +25,7 @@ export default function AboutModal({ open, onClose }: Props) {
     return (
         <div className = "overlay" onClick={onClose}>
             <div className = "modal" onClick={e => e.stopPropagation()}>
-                <h3 className = "title">About</h3>
-
+                <h2 className = "title">About</h2>
                 <div className = "description">
                     ©2026 Andrii Stetskovych
                     <br />

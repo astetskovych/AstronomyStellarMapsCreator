@@ -335,7 +335,6 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
                     background: "black",
                 }}
             />
-
             {selectedStarDetails && (
                 <div
                     style={{

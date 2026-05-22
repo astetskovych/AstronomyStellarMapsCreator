@@ -1,0 +1,49 @@
+.wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* center on X axis */
+    z-index: 10;
+    pointer-events: none; /* allows canvas interaction except buttons */
+}
+
+.bar {
+    display: flex;
+    gap: 100px;
+    padding: 10px 10px;
+    background: transparent;
+    pointer-events: auto;
+    font-family: monospace;
+}
+
+.menu {
+    position: relative;
+}
+
+.button {
+    background: black;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 6px 12px;
+    cursor: crosshair;
+    font-family: monospace;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: black;
+    border: 1px solid #00ff00;
+    min-width: 160px;
+}
+
+.item {
+    padding: 6px 10px;
+    color: #00ff00;
+    cursor: pointer;
+    font-family: monospace;
+    white-space: nowrap;
+}

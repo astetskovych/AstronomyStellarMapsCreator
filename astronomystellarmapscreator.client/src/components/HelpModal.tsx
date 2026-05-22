@@ -23,8 +23,7 @@ export default function HelpModal({ open, onClose }: Props) {
     return (
         <div className="overlay" onClick={onClose}>
             <div className="modal" onClick={e => e.stopPropagation()}>
-                <h3 className="title">Help</h3>
-
+                <h2 className="title">Help</h2>
                 <table className="helpTable">
                     <tbody>
                         <tr>
@@ -53,7 +52,6 @@ export default function HelpModal({ open, onClose }: Props) {
                         </tr>
                     </tbody>
                 </table>
-
                 <div className="hint">
                     Click anywhere or press ESC to close
                 </div>

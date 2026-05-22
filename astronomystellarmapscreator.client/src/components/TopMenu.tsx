@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./TopMenu.css";
 
 type Props = {
     onOpenGridModal: () => void;
@@ -7,16 +8,17 @@ type Props = {
     onOpenLoad: () => void;
     onOpenExit: () => void;
     onOpenHelp: () => void;
+    onOpenSave: () => void;
 };
 
 export default function TopMenu({ onOpenGridModal,
                                   onOpenAbout,
                                   onOpenConstellations,
                                   onOpenLoad,
+                                  onOpenSave,
                                   onOpenExit,
                                   onOpenHelp }: Props) {
     const [openMenu, setOpenMenu] = useState<string | null>(null);
-
     const menus = [
         {
             label: "File",
@@ -33,25 +35,23 @@ export default function TopMenu({ onOpenGridModal,
     ];
 
     return (
-        <div style={styles.wrapper}>
-            <div style={styles.bar}>
+        <div className = "wrapper">
+            <div className= "bar">
                 {menus.map(menu => (
                     <div
                         key={menu.label}
-                        style={styles.menu}
+                        className= "menu"
                         onMouseEnter={() => setOpenMenu(menu.label)}
-                        onMouseLeave={() => setOpenMenu(null)}
-                    >
-                        <button style={styles.button}>
+                        onMouseLeave={() => setOpenMenu(null)}>
+                        <button className= "button">
                             {menu.label}
                         </button>
-
                         {openMenu === menu.label && (
-                            <div style={styles.dropdown}>
+                            <div className= "dropdown">
                                 {menu.items.map(item => (
                                     <div
                                         key={item}
-                                        style={styles.item}
+                                        className= "item"
                                         onClick={() => {
                                             if (item === "Grids") {
                                                 onOpenGridModal();
@@ -65,6 +65,9 @@ export default function TopMenu({ onOpenGridModal,
                                             if (item === "Load") {
                                                 onOpenLoad();
                                             }
+                                            if (item === "Save") {
+                                                onOpenSave();
+                                            }
                                             if (item === "Exit") {
                                                 onOpenExit();
                                             }
@@ -73,8 +76,7 @@ export default function TopMenu({ onOpenGridModal,
                                             }
                                             console.log(menu.label, item);
                                             setOpenMenu(null);
-                                        }}
-                                    >
+                                        }}>
                                         {item}
                                     </div>
                                 ))}
@@ -86,55 +88,3 @@ export default function TopMenu({ onOpenGridModal,
         </div>
     );
 }
-
-const styles: Record<string, React.CSSProperties> = {
-    wrapper: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        display: "flex",
-        justifyContent: "center", // ⭐ center on X axis
-        zIndex: 10,
-        pointerEvents: "none", // allows canvas interaction except buttons
-    },
-
-    bar: {
-        display: "flex",
-        gap: "100px",
-        padding: "10px 10px",
-        background: "transparent",
-        pointerEvents: "auto",
-        fontFamily: "monospace",
-    },
-
-    menu: {
-        position: "relative",
-    },
-
-    button: {
-        background: "black",
-        color: "#00ff00",
-        border: "1px solid #00ff00",
-        padding: "6px 12px",
-        cursor: "crosshair",
-        fontFamily: "monospace",
-    },
-
-    dropdown: {
-        position: "absolute",
-        top: "100%",
-        left: 0,
-        background: "black",
-        border: "1px solid #00ff00",
-        minWidth: "160px",
-    },
-
-    item: {
-        padding: "6px 10px",
-        color: "#00ff00",
-        cursor: "pointer",
-        fontFamily: "monospace",
-        whiteSpace: "nowrap",
-    },
-};

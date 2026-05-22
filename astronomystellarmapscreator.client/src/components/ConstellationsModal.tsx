@@ -32,7 +32,7 @@ export default function ConstellationsModal({ open, onClose, onApply }: Props) {
     return (
         <div className="overlay" onClick={onClose}>
             <div className="modal" onClick={e => e.stopPropagation()}>
-                <h3 className="title">Constellations</h3>
+                <h2 className="title">Constellations</h2>
                 <div className="text">
                     <label className="checkbox">
                         <input
@@ -68,7 +68,6 @@ export default function ConstellationsModal({ open, onClose, onApply }: Props) {
                 >
                     Apply
                 </button>
-
                 <div className="hint">
                     ESC to close
                 </div>

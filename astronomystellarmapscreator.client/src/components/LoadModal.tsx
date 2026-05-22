@@ -27,8 +27,7 @@ export default function LoadModal({ open, onClose }: Props) {
     return (
         <div className="overlay" onClick={onClose}>
             <div className="modal" onClick={e => e.stopPropagation()}>
-                <h3 className="title">Load Catalogue</h3>
-
+                <h2 className="title">Load Catalogue</h2>
                 <div className="scrollArea">
                     {catalogues.map((item, index) => (
                         <div key={index} className="item">
@@ -36,7 +35,6 @@ export default function LoadModal({ open, onClose }: Props) {
                         </div>
                     ))}
                 </div>
-
                 <div className="hint">ESC to close</div>
             </div>
         </div>
