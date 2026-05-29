@@ -9,6 +9,7 @@ type Props = {
     onOpenExit: () => void;
     onOpenHelp: () => void;
     onOpenSave: () => void;
+    onOpenLanguage: () => void;
 };
 
 export default function TopMenu({ onOpenGridModal,
@@ -17,19 +18,20 @@ export default function TopMenu({ onOpenGridModal,
                                   onOpenLoad,
                                   onOpenSave,
                                   onOpenExit,
-                                  onOpenHelp }: Props) {
+                                  onOpenHelp,
+                                  onOpenLanguage }: Props) {
     const [openMenu, setOpenMenu] = useState<string | null>(null);
     const menus = [
         {
-            label: "File",
+            label: "FILE",
             items: ["Load", "Save", "Exit"],
         },
         {
-            label: "View",
-            items: ["Grids", "Constellations", "Settings"],
+            label: "VIEW",
+            items: ["Grids", "Constellations", "Settings", "Language"],
         },
         {
-            label: "Help",
+            label: "HELP",
             items: ["Help", "About"],
         },
     ];
@@ -51,32 +53,37 @@ export default function TopMenu({ onOpenGridModal,
                                 {menu.items.map(item => (
                                     <div
                                         key={item}
-                                        className= "item"
+                                        className="item"
                                         onClick={() => {
-                                            if (item === "Grids") {
-                                                onOpenGridModal();
-                                            }
-                                            if (item === "About") {
-                                                onOpenAbout();
-                                            }
-                                            if (item === "Constellations") {
-                                                onOpenConstellations();
-                                            }
-                                            if (item === "Load") {
-                                                onOpenLoad();
-                                            }
-                                            if (item === "Save") {
-                                                onOpenSave();
-                                            }
-                                            if (item === "Exit") {
-                                                onOpenExit();
-                                            }
-                                            if (item === "Help") {
-                                                onOpenHelp();
-                                            }
-                                            console.log(menu.label, item);
                                             setOpenMenu(null);
-                                        }}>
+                                            switch (item) {
+                                                case "Load":
+                                                    onOpenLoad();
+                                                    break;
+                                                case "Save":
+                                                    onOpenSave();
+                                                    break;
+                                                case "Exit":
+                                                    onOpenExit();
+                                                    break;
+                                                case "Grids":
+                                                    onOpenGridModal();
+                                                    break;
+                                                case "Constellations":
+                                                    onOpenConstellations();
+                                                    break;
+                                                case "Language":
+                                                    onOpenLanguage();
+                                                    break;
+                                                case "Help":
+                                                    onOpenHelp();
+                                                    break;
+                                                case "About":
+                                                    onOpenAbout();
+                                                    break;
+                                            }
+                                        }}
+                                    >
                                         {item}
                                     </div>
                                 ))}

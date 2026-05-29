@@ -7,9 +7,9 @@
         {
             _context = context;
         }
-        public IEnumerable<StarDTO> GetStars()
+        public async Task<IEnumerable<StarDTO>> GetCelestialObjectsAsync()
         {
-            var stars = _context.I40CatalogDats.Select(s => new StarDTO
+            var stars = await _context.I40CatalogDats.Select(s => new StarDTO
             {
                 Id = s.Id,
                 RA = (double)(s.RahH + s.RamMin / 60.0 + s.RasS / 3600.0),
@@ -17,14 +17,25 @@
                     ? (-1)*(double)(s.DedDeg + s.DemArcmin / 60.0 + s.DesArcsec / 3600.0)
                     : (double)(s.DedDeg + s.DemArcmin / 60.0 + s.DesArcsec / 3600.0),
                 Mag = s.VmagMag ?? 100,
-            }).ToList();
+            }).ToListAsync();
 
             return stars;
         }
 
-        public I40CatalogDat GetStar(int id)
+        public async Task<I40CatalogDat> GetCelestialObjectAsync(int id)
         {
-            return _context.I40CatalogDats.Where(s => s.Id == id).FirstOrDefault();
+            return await _context.I40CatalogDats.Where(s => s.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<CatDTO>> GetCatsAsync()
+        {
+            return await _context.Cats.Select(c => new CatDTO
+            {
+                Id = c.Id,
+                UniqueIdetifierId = c.UniqueIdetifierId,
+                Name = c.Name,
+                Records = c.Records
+            }).ToListAsync();
         }
     }
 }

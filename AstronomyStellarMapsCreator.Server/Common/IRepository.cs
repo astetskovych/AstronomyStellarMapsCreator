@@ -2,7 +2,8 @@
 {
     public interface IRepository
     {
-        IEnumerable<StarDTO> GetStars();
-        I40CatalogDat GetStar(int id);
+        Task<IEnumerable<StarDTO>> GetCelestialObjectsAsync();
+        Task<I40CatalogDat> GetCelestialObjectAsync(int id);
+        Task<IEnumerable<CatDTO>> GetCatsAsync();
     }
 }

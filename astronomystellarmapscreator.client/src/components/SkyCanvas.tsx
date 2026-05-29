@@ -3,6 +3,7 @@ import type { Star } from "../types/Star";
 import { project } from "../utils/projection";
 import { screenToWorld } from "../utils/coordinates";
 import { findNearestStar } from "../utils/findStar";
+import "./SkyCanvas.css";
 
 type NavState = {
     scale: number;
@@ -29,17 +30,16 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
     });
     const selectedStarRef = useRef<Star | null>(null);
     const renderRef = useRef<() => void>(() => { });
-
     const [stars, setStars] = useState<Star[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedStarDetails, setSelectedStarDetails] = useState<Record<string, unknown> | null>(null);
 
     // fetch
     useEffect(() => {
-        fetch("/api/stars")
+        fetch("/api/celestialObjects")
             .then(res => {
                 if (!res.ok) {
-                    throw new Error("БЛЯ!");
+                    throw new Error("BIG BANG!");
                 }
                 return res.json();
             })
@@ -51,7 +51,6 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
                     dec: s.dec,
                     mag: s.mag,
                 }));
-
                 setStars(mapped);
             })
             .catch(console.error)
@@ -66,33 +65,28 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
         const ctx = canvas.getContext("2d");
         if (!ctx) return;
 
+        window.addEventListener("resize", resize);
+        resize();
+
         function resize() {
             const canvas = canvasRef.current;
             if (!canvas) return;
 
             const dpr = window.devicePixelRatio || 1;
-
             canvas.width = canvas.clientWidth * dpr;
             canvas.height = canvas.clientHeight * dpr;
-
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
             render();
         }
-
-        window.addEventListener("resize", resize);
-        resize();
 
         function render() {
             if (!canvas || !ctx) return;
 
             const { scale, offsetX, offsetY } = navRef.current;
-
             const dpr = window.devicePixelRatio || 1;
-
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             ctx.save();
+
             ctx.setTransform(
                 scale * dpr,
                 0,
@@ -103,17 +97,9 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
             );
 
             if (gridType === "Equatorial") {
-                drawEquatorialGrid(
-                    ctx,
-                    canvas.clientWidth,
-                    canvas.clientHeight
-                );
-                // draw labels WITHOUT transform
-                //ctx.save();
-                //ctx.setTransform(1, 0, 0, 1, 0, 0);
+                drawEquatorialGrid(ctx, canvas.clientWidth, canvas.clientHeight);
                 drawEquatorialLabels(ctx, canvas.clientWidth, canvas.clientHeight);
                 drawMapBorder(ctx, canvas.clientWidth, canvas.clientHeight);
-                //ctx.restore();
             }
 
             if (constellations.borders) {
@@ -129,12 +115,10 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
             }
 
             for (const star of stars) {
-                const { x, y } = project(
-                    star.ra,
-                    star.dec,
-                    canvas.clientWidth,
-                    canvas.clientHeight
-                );
+                const { x, y } = project(star.ra,
+                                         star.dec,
+                                         canvas.clientWidth,
+                                         canvas.clientHeight);
 
                 const r = Math.max(0.2, 4 - star.mag);
 
@@ -153,7 +137,6 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
                     ctx.stroke();
                 }
             }
-
             ctx.restore();
         }
 
@@ -165,10 +148,8 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
             if (!canvas) return;
 
             const rect = canvas.getBoundingClientRect();
-
             const screenX = e.clientX - rect.left;
             const screenY = e.clientY - rect.top;
-
             const nav = navRef.current;
 
             const { x, y } = screenToWorld(
@@ -193,7 +174,7 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
                 setSelectedStarDetails(null);
             }
             if (star) {
-                fetch(`/api/stars/${star.id}`)
+                fetch(`/api/celestialObjects/${star.id}`)
                     .then(res => {
                         if (!res.ok) throw new Error("Failed to fetch star details");
                         return res.json() as Promise<Record<string, unknown>>;
@@ -213,25 +194,17 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
             if (!canvas) return;
 
             e.preventDefault();
-
             const zoomIntensity = 0.1;
             const nav = navRef.current;
-
             const rect = canvas.getBoundingClientRect();
-
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
-
             const scaleFactor = 1 - e.deltaY * zoomIntensity * 0.01;
             const newScale = nav.scale * scaleFactor;
 
-            nav.offsetX =
-                mouseX - (mouseX - nav.offsetX) * (newScale / nav.scale);
-            nav.offsetY =
-                mouseY - (mouseY - nav.offsetY) * (newScale / nav.scale);
-
+            nav.offsetX = mouseX - (mouseX - nav.offsetX) * (newScale / nav.scale);
+            nav.offsetY = mouseY - (mouseY - nav.offsetY) * (newScale / nav.scale);
             nav.scale = Math.max(0.2, Math.min(newScale, 20));
-
             requestAnimationFrame(render);
         }
 
@@ -253,14 +226,11 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
 
             const dx = e.clientX - lastX;
             const dy = e.clientY - lastY;
-
             const nav = navRef.current;
             nav.offsetX += dx;
             nav.offsetY += dy;
-
             lastX = e.clientX;
             lastY = e.clientY;
-
             requestAnimationFrame(render);
         }
 
@@ -294,7 +264,6 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
             if (e.key === "-") {
                 nav.scale = Math.max(nav.scale / 1.2, 0.2);
             }
-
             renderRef.current();
         };
 
@@ -314,43 +283,19 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
         return () => window.removeEventListener("keydown", handleKey);
     }, []);
 
-
-    // LOADING
     if (loading) {
         return (
-            <div style={{ color: "yellow", background: "black" }}>
-                Loading map...
+            <div>
+                <h2 className= "loading">Loading map...</h2> 
             </div>
         );
     }
 
     return (
-        <div style={{ width: "100%", height: "100%", position: "relative" }}>
-            <canvas
-                ref={canvasRef}
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    display: "block",
-                    background: "black",
-                }}
-            />
+        <div className= "canvasWrapper">
+            <canvas ref={canvasRef} className= "canvas"/>
             {selectedStarDetails && (
-                <div
-                    style={{
-                        position: "absolute",
-                        top: 20,
-                        left: 20,
-                        color: "#00ff00",
-                        background: "rgba(0,0,0,0.5)",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        //borderColor: "#00ff00",
-                        fontSize: "14px",
-                        maxWidth: "250px",
-                        border: "1px solid rgb(0, 255, 0)"
-                    }}
-                >
+                <div className= "starDetails">
                     {Object.entries(selectedStarDetails).map(([key, value]) => (
                         <div key={key}>
                             <b>{key}:</b> {String(value)}

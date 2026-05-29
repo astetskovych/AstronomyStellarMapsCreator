@@ -24,7 +24,6 @@
     color: #00ff00;
 }
 
-/* Title */
 .title {
     color: #00ff00;
     margin-bottom: 10px;
@@ -60,7 +59,6 @@
             box-shadow: 0 0 10px #00ff00;
         }
 
-/* Button */
 .applyButton {
     margin-top: 10px;
     padding: 8px;
@@ -82,11 +80,12 @@
 }
 
 .scrollArea {
-    max-height: 200px;
+    max-height: 300px;
     overflow-y: auto;
     border: 3px solid #00ff00;
     padding: 5px;
     background: black;
+    max-width: 500px;
 }
 
 .item {
@@ -107,6 +106,7 @@
 
 .scrollArea::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
 }
 
 .scrollArea::-webkit-scrollbar-thumb {
@@ -125,19 +125,16 @@
         padding: 4px 8px;
     }
 
-    /* key column */
     .helpTable .key {
         width: 60px;
         color: #00ff00;
         text-align: left;
     }
 
-    /* subtle row separation */
     .helpTable tr {
         border-bottom: 1px solid #002200;
     }
 
-        /* optional hover */
         .helpTable tr:hover {
             background: #001a00;
         }
@@ -187,3 +184,31 @@ input {
     .swatch.active {
         outline: 2px solid #00ff00;
     }
+
+.languageList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+    .languageList button {
+        background: black;
+        color: #00ff00;
+        border: 1px solid #00ff00;
+        padding: 8px;
+        cursor: crosshair;
+        font-family: monospace;
+        text-align: left;
+    }
+
+     .languageList button:hover {
+            background: #00ff00;
+            color: black;
+        }
+
+hr {
+    border: none;
+    height: 1px;
+    background-color: #00ff00;
+}
