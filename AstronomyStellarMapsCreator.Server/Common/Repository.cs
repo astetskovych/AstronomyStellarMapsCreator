@@ -37,5 +37,14 @@
                 Records = c.Records
             }).ToListAsync();
         }
+
+        public async Task<IEnumerable<CategoryDTO>> GetCategoriesAsync()
+        {
+            return await _context.Categories.Select(c => new CategoryDTO
+            {
+                Id = c.Id,
+                Name = c.Description
+            }).ToListAsync();
+        }
     }
 }

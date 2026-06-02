@@ -18,5 +18,12 @@
 
             return Ok(cats.Take(100));
         }
+
+        [HttpGet("categories")]
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
+        {
+            var categories = await _repository.GetCategoriesAsync();
+            return Ok(categories);
+        }
     }
 }

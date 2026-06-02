@@ -50,14 +50,14 @@
     gap: 8px;
 }
 
-    .checkbox input {
-        accent-color: #00ff00; 
-        cursor: pointer;
-    }
+.checkbox input {
+    accent-color: #00ff00; 
+    cursor: pointer;
+}
 
-        .checkbox input:hover {
-            box-shadow: 0 0 10px #00ff00;
-        }
+.checkbox input:hover {
+    box-shadow: 0 0 10px #00ff00;
+}
 
 .applyButton {
     margin-top: 10px;
@@ -69,9 +69,9 @@
     cursor: pointer;
 }
 
-    .applyButton:hover {
-        background: #002200;
-    }
+.applyButton:hover {
+    background: #002200;
+}
 
 .hint {
     margin-top: 10px;
@@ -95,14 +95,14 @@
     background: black;
 }
 
-    .item:hover {
-        background: #002200;
-    }
+.item:hover {
+    background: #002200;
+}
 
-    .item.active {
-        background: #003300;
-        box-shadow: inset 0 0 5px #00ff00;
-    }
+.item.active {
+    background: #003300;
+    box-shadow: inset 0 0 5px #00ff00;
+}
 
 .scrollArea::-webkit-scrollbar {
     width: 6px;
@@ -121,15 +121,15 @@
     font-family: monospace;
 }
 
-    .helpTable td {
-        padding: 4px 8px;
-    }
+.helpTable td {
+    padding: 4px 8px;
+}
 
-    .helpTable .key {
-        width: 60px;
-        color: #00ff00;
-        text-align: left;
-    }
+.helpTable .key {
+    width: 60px;
+    color: #00ff00;
+    text-align: left;
+}
 
     .helpTable tr {
         border-bottom: 1px solid #002200;
@@ -211,4 +211,58 @@ hr {
     border: none;
     height: 1px;
     background-color: #00ff00;
+}
+
+.searchSection {
+    /*display: flex;*/
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.searchSection input,
+.searchSection select {
+    /*flex: 1;*/
+    /*min-width: 140px;*/
+    padding: 8px 10px;
+    border: 1px solid #00ff00;
+    border-radius: 6px;
+    background: #1e1e1e;
+    color: #00ff00;
+    width: 100%;
+}
+
+.searchSection input::placeholder {
+    color: #00ff00;
+}
+
+.searchSection button {
+    padding: 8px 16px;
+    border: 1px solid #00ff00;
+    border-radius: 6px;
+    background: #000000;
+    color: #00ff00;
+    cursor: pointer;
+    transition: 0.2s;
+    margin: auto;
+    width: 150px;
+}
+
+.searchSection button:hover:not(:disabled) {
+    background: #00ff00;
+    color: black;
+}
+
+.searchSection button:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+.searchSection button::after hover {
+    background: #000;
+}
+
+.searchSection .inpt {
+    display: flex;
+    margin: 10px;
 }

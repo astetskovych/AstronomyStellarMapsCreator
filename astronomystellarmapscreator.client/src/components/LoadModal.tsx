@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import "./Modals.css";
 import type { CatDTO } from "../types/cat";
+import type { Category } from "../types/category";
 
 type Props = {
     open: boolean;
     onClose: () => void;
-    onLoad?: (cat: CatDTO) => void; // optional but useful
+    onLoad?: (cat: CatDTO) => void;
 };
 
 export default function LoadModal({ open, onClose }: Props) {
@@ -13,6 +14,13 @@ export default function LoadModal({ open, onClose }: Props) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [selected, setSelected] = useState<CatDTO | null>(null);
+    const [categories, setCategories] = useState<Record<number, Category>>({});
+
+    const [name, setName] = useState("");
+    const [categoryId, setCategoryId] = useState("");
+    const [key, setKey] = useState("");
+
+    const isSearchEnabled = name || categoryId || key;
 
     useEffect(() => {
         if (!open) return;
@@ -28,16 +36,51 @@ export default function LoadModal({ open, onClose }: Props) {
     useEffect(() => {
         if (!open) return;
 
-        fetch("/api/cats")
-            .then(res => {
-                if (!res.ok) throw new Error();
-                return res.json();
-            })
-            .then(setCats)
-            .catch(() => setError("Failed to load catalogues"))
-            .finally(() => setLoading(false));
+        const fetchData = async () => {
+            setLoading(true);
+            setError(null);
 
+            try {
+                const [catsRes, categoriesRes] = await Promise.all([
+                    fetch("/api/cats"),
+                    fetch("/api/categories")
+                ]);
+
+                const catsData = await catsRes.json();
+                const categoriesData = await categoriesRes.json();
+
+                setCats(catsData);
+                setCategories(categoriesData);
+            } catch (err) {
+                setError("Failed to load catalogues " + err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
     }, [open]);
+
+    const handleSearch = async () => {
+        try {
+            setLoading(true);
+
+            const query = new URLSearchParams({
+                name,
+                categoryId,
+                key
+            });
+
+            const res = await fetch(`api/cats/search?${query}`);
+            const data = await res.json();
+
+            setCats(data);
+        } catch (err) {
+            setError("Search failed " + err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (!open) return null;
 
@@ -45,6 +88,45 @@ export default function LoadModal({ open, onClose }: Props) {
         <div className="overlay" onClick={onClose}>
             <div className="modal" onClick={e => e.stopPropagation()}>
                 <h2 className="title">Load Catalogue</h2>
+                <div className="searchSection">
+                    <div className="inpt">
+                        <select
+                            value={categoryId}
+                            onChange={e => setCategoryId(e.target.value)}
+                        >
+                            <option value="">All Categories</option>
+                            {Object.entries(categories).map(([id, cat]) => (
+                                <option key={id} value={id}>
+                                    {cat.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="inpt">
+                        <input
+                            type="text"
+                            placeholder="Catalogue name"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                        />
+                    </div>
+                    <div className="inpt">
+                        <input
+                            type="text"
+                            placeholder="Key"
+                            value={key}
+                            onChange={e => setKey(e.target.value)}
+                            />
+                    </div>
+                    <div className="inpt">
+                        <button
+                            disabled={!isSearchEnabled}
+                            onClick={handleSearch}
+                        >
+                        Search
+                        </button>
+                    </div>
+                </div>
                 <div className="scrollArea">
                     {loading && <div className="item">Loading...</div>}
                     {error && <div className="item error">{error}</div>}
@@ -59,7 +141,7 @@ export default function LoadModal({ open, onClose }: Props) {
                             <hr />
                         </div>
                     ))}
-                </div>         
+                </div>
                 <div className="hint">ESC to close</div>
             </div>
         </div>

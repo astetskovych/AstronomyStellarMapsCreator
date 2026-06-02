@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AstronomyStellarMapsCreator.Server.Models;
+﻿namespace AstronomyStellarMapsCreator.Server.Models;
 
 public partial class CatCategory
 {
