@@ -9,11 +9,19 @@
         }
         public async Task<IEnumerable<StarDTO>> GetCelestialObjectsAsync()
         {
-            var stars = await _context.I40CatalogDats.Select(s => new StarDTO
+            var stars = await _context.V50Catalogs.Where(s =>
+                s.RahH != null &&
+                s.RamMin != null &&
+                s.RasS != null &&
+                s.DedDeg != null &&
+                s.DemArcmin != null &&
+                s.DesArcsec != null &&
+                s.De != null
+                ).Select(s => new StarDTO
             {
                 Id = s.Id,
                 RA = (double)(s.RahH + s.RamMin / 60.0 + s.RasS / 3600.0),
-                Dec = s.De.Trim() == "-" 
+                    Dec = s.De.Trim() == "-"
                     ? (-1)*(double)(s.DedDeg + s.DemArcmin / 60.0 + s.DesArcsec / 3600.0)
                     : (double)(s.DedDeg + s.DemArcmin / 60.0 + s.DesArcsec / 3600.0),
                 Mag = s.VmagMag ?? 100,

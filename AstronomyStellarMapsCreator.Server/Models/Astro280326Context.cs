@@ -129,6 +129,10 @@ public partial class Astro280326Context : DbContext
 
     public virtual DbSet<Unit> Units { get; set; }
 
+    public virtual DbSet<V50Catalog> V50Catalogs { get; set; }
+
+    public virtual DbSet<V50Note> V50Notes { get; set; }
+
     public virtual DbSet<Vii11DataDat> Vii11DataDats { get; set; }
 
     public virtual DbSet<Vii6DataDat> Vii6DataDats { get; set; }
@@ -145,7 +149,7 @@ public partial class Astro280326Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=Astro28_03_26;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=.;Database=Astro28_03_26;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1344,6 +1348,148 @@ public partial class Astro280326Context : DbContext
             entity.Property(e => e.Description).HasMaxLength(100);
             entity.Property(e => e.Dim).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<V50Catalog>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__V/50(cat__E7FC93549CC913E6");
+
+            entity.ToTable("V/50(catalog)", "Cats");
+
+            entity.Property(e => e.Id).HasColumnName("<ID>");
+            entity.Property(e => e.Ads)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("ADS");
+            entity.Property(e => e.Adscomp)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("ADScomp");
+            entity.Property(e => e.BVMag).HasColumnName("B-V(mag)");
+            entity.Property(e => e.De)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("DE-");
+            entity.Property(e => e.De1900)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("DE-1900");
+            entity.Property(e => e.Ded1900Deg).HasColumnName("DEd1900(deg)");
+            entity.Property(e => e.DedDeg).HasColumnName("DEd(deg)");
+            entity.Property(e => e.Dem1900Arcmin).HasColumnName("DEm1900(arcmin)");
+            entity.Property(e => e.DemArcmin).HasColumnName("DEm(arcmin)");
+            entity.Property(e => e.Des1900Arcsec).HasColumnName("DEs1900(arcsec)");
+            entity.Property(e => e.DesArcsec).HasColumnName("DEs(arcsec)");
+            entity.Property(e => e.Dm)
+                .HasMaxLength(22)
+                .IsUnicode(false)
+                .HasColumnName("DM");
+            entity.Property(e => e.DmagMag).HasColumnName("Dmag(mag)");
+            entity.Property(e => e.Fk5).HasColumnName("FK5");
+            entity.Property(e => e.GlatDeg).HasColumnName("GLAT(deg)");
+            entity.Property(e => e.GlonDeg).HasColumnName("GLON(deg)");
+            entity.Property(e => e.Hd).HasColumnName("HD");
+            entity.Property(e => e.Hr).HasColumnName("HR");
+            entity.Property(e => e.Irflag)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("IRflag");
+            entity.Property(e => e.LRotVel)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("l_RotVel");
+            entity.Property(e => e.MultId)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("MultID");
+            entity.Property(e => e.Multiple)
+                .HasMaxLength(25)
+                .IsUnicode(false);
+            entity.Property(e => e.NParallax)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("n_Parallax");
+            entity.Property(e => e.NRI)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("n_R-I");
+            entity.Property(e => e.NRadVel)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("n_RadVel");
+            entity.Property(e => e.NSpType)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("n_SpType");
+            entity.Property(e => e.NVmag)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("n_Vmag");
+            entity.Property(e => e.Name)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.NoteFlag)
+                .HasMaxLength(2)
+                .IsUnicode(false);
+            entity.Property(e => e.ParallaxArcsec).HasColumnName("Parallax(arcsec)");
+            entity.Property(e => e.PmDeArcsecYr).HasColumnName("pmDE(arcsec/yr)");
+            entity.Property(e => e.PmRaArcsecYr).HasColumnName("pmRA(arcsec/yr)");
+            entity.Property(e => e.RIMag).HasColumnName("R-I(mag)");
+            entity.Property(e => e.RIrflag)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("r_IRflag");
+            entity.Property(e => e.RadVelKmS).HasColumnName("RadVel(km/s)");
+            entity.Property(e => e.Rah1900H).HasColumnName("RAh1900(h)");
+            entity.Property(e => e.RahH).HasColumnName("RAh(h)");
+            entity.Property(e => e.Ram1900Min).HasColumnName("RAm1900(min)");
+            entity.Property(e => e.RamMin).HasColumnName("RAm(min)");
+            entity.Property(e => e.Ras1900S).HasColumnName("RAs1900(s)");
+            entity.Property(e => e.RasS).HasColumnName("RAs(s)");
+            entity.Property(e => e.RotVelKmS).HasColumnName("RotVel(km/s)");
+            entity.Property(e => e.Sao).HasColumnName("SAO");
+            entity.Property(e => e.SepArcsec).HasColumnName("Sep(arcsec)");
+            entity.Property(e => e.SpType)
+                .HasMaxLength(40)
+                .IsUnicode(false);
+            entity.Property(e => e.UBMag).HasColumnName("U-B(mag)");
+            entity.Property(e => e.UBV)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("u_B-V");
+            entity.Property(e => e.URotVel)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("u_RotVel");
+            entity.Property(e => e.UUB)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("u_U-B");
+            entity.Property(e => e.UVmag)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("u_Vmag");
+            entity.Property(e => e.VarId)
+                .HasMaxLength(25)
+                .IsUnicode(false)
+                .HasColumnName("VarID");
+            entity.Property(e => e.VmagMag).HasColumnName("Vmag(mag)");
+        });
+
+        modelBuilder.Entity<V50Note>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__V/50(not__E7FC9354874AC599");
+
+            entity.ToTable("V/50(notes)", "Cats");
+
+            entity.Property(e => e.Id).HasColumnName("<ID>");
+            entity.Property(e => e.Category)
+                .HasMaxLength(25)
+                .IsUnicode(false);
+            entity.Property(e => e.Hr).HasColumnName("HR");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(240)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Vii11DataDat>(entity =>
