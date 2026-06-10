@@ -3,9 +3,8 @@
     public interface IRepository
     {
         Task<IEnumerable<StarDTO>> GetCelestialObjectsAsync();
-        Task<I40CatalogDat> GetCelestialObjectAsync(int id);
+        Task<V50Catalog> GetCelestialObjectAsync(int id);
         Task<IEnumerable<CatDTO>> GetCatsAsync();
-
         Task<IEnumerable<CategoryDTO>> GetCategoriesAsync();
     }
 }

@@ -30,9 +30,9 @@
             return stars;
         }
 
-        public async Task<I40CatalogDat> GetCelestialObjectAsync(int id)
+        public async Task<V50Catalog> GetCelestialObjectAsync(int id)
         {
-            return await _context.I40CatalogDats.Where(s => s.Id == id).FirstOrDefaultAsync();
+            return await _context.V50Catalogs.Where(s => s.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<CatDTO>> GetCatsAsync()
