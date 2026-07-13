@@ -19,9 +19,10 @@ type Props = {
         figures: boolean;
     };
     setHelpOpen: (open: boolean) => void;
+    stars: Star[];
 };
 
-export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Props) {
+export default function SkyCanvas({ gridType, constellations, setHelpOpen, stars }: Props) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const navRef = useRef<NavState>({
         scale: 1,
@@ -30,32 +31,7 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
     });
     const selectedStarRef = useRef<Star | null>(null);
     const renderRef = useRef<() => void>(() => { });
-    const [stars, setStars] = useState<Star[]>([]);
-    const [loading, setLoading] = useState(true);
     const [selectedStarDetails, setSelectedStarDetails] = useState<Record<string, unknown> | null>(null);
-
-    // fetch
-    useEffect(() => {
-        fetch("/api/celestialObjects")
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("BIG BANG!");
-                }
-                return res.json();
-            })
-            .then((data: Star[]) => {
-                const mapped: Star[] = data.map((s) => ({
-                    id: s.id,
-                    name: s.name,
-                    ra: s.ra,
-                    dec: s.dec,
-                    mag: s.mag,
-                }));
-                setStars(mapped);
-            })
-            .catch(console.error)
-            .finally(() => setLoading(false));
-    }, []);
 
     // logic
     useEffect(() => {
@@ -282,14 +258,6 @@ export default function SkyCanvas({ gridType, constellations, setHelpOpen }: Pro
         window.addEventListener("keydown", handleKey);
         return () => window.removeEventListener("keydown", handleKey);
     }, []);
-
-    if (loading) {
-        return (
-            <div>
-                <h2 className= "loading">Loading map...</h2> 
-            </div>
-        );
-    }
 
     return (
         <div className= "canvasWrapper">

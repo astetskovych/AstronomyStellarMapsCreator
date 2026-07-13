@@ -54,5 +54,29 @@
                 Name = c.Description
             }).ToListAsync();
         }
+
+        public async Task<IEnumerable<CatDTO>> GetCatsFilteredAsync(string? name, int? categoryId, string? key)
+        {
+            var query = _context.Cats.AsQueryable();
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(c => c.Name.Contains(name));
+            }
+            if (categoryId.HasValue)
+            {
+                query = query.Where(c => c.UniqueIdetifier.CategoryId == categoryId.Value);
+            }
+            if (!string.IsNullOrEmpty(key))
+            {
+                query = query.Where(c => c.Name.Contains(key) || c.Title.Contains(key));
+            }
+            return await query.Select(c => new CatDTO
+            {
+                Id = c.Id,
+                UniqueIdetifierId = c.UniqueIdetifierId,
+                Name = c.Name,
+                Records = c.Records
+            }).ToListAsync();
+        }
     }
 }

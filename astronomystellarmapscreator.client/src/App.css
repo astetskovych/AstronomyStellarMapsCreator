@@ -2,3 +2,24 @@
     width: 100%;
     aspect-ratio: 2/1;
 }
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("images/hubble-captures-star-s.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-blend-mode: darken;
+    z-index: 10;
+}
+
+.loading-text {
+    color: #00ff00;
+    font-size: 36px;
+    font-family: monospace;
+}

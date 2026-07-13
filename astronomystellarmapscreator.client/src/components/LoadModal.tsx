@@ -113,7 +113,7 @@ export default function LoadModal({ open, onClose }: Props) {
                     <div className="inpt">
                         <input
                             type="text"
-                            placeholder="Key"
+                            placeholder="Keyword"
                             value={key}
                             onChange={e => setKey(e.target.value)}
                             />

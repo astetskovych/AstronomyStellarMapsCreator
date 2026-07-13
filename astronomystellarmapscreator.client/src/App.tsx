@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import TopMenu from "./components/TopMenu";
 import SkyCanvas from "./components/SkyCanvas";
 import GridModal from "./components/GridModal";
@@ -9,6 +9,9 @@ import ExitModal from "./components/ExitModal";
 import HelpModal from "./components/HelpModal";
 import SaveModal from "./components/SaveModal";
 import LanguageModal from "./components/LanguageModal"; 
+import { loadStars } from "./utils/loadStars";
+import type { Star } from "./types/Star";
+import "./App.css";
 
 export type LanguageCode = "en" | "ua" | "ar"; // extend anytime
 
@@ -34,20 +37,14 @@ export default function App() {
         save: false,
         language: false,
     });
-    //const [gridModalOpen, setGridModalOpen] = useState(false);
-    //const [aboutOpen, setAboutOpen] = useState(false);
-    //const [constModalOpen, setConstModalOpen] = useState(false);
     const [constellations, setConstellations] = useState({
         borders: true,
         names: true,
         figures: false
     });
-    //const [loadOpen, setLoadOpen] = useState(false);
-    //const [exitModalOpen, setExitModalOpen] = useState(false);
-    //const [helpOpen, setHelpOpen] = useState(false);
-    //const [saveOpen, setSaveOpen] = useState(false);
-    //const [langOpen, setLanguageOpen] = useState(false);
     const [language, setLanguage] = useState<LanguageCode>(getInitialLanguage);
+    const [stars, setStars] = useState<Star[]>([]);
+    const [loading, setLoading] = useState(true);
 
     /* =========================
        🔧 Helpers
@@ -63,52 +60,56 @@ export default function App() {
         window.location.href = "about:blank";
     };
 
+    useEffect(() => {
+        loadStars("/api/celestialObjects", setStars, setLoading);
+    }, []);
+
     return (
         <div style={{ width: "100%", aspectRatio: "2 / 1" }}>
-            <TopMenu
-                onOpenGridModal={() => openModal("grid")}
-                onOpenAbout={() => openModal("about")}
-                onOpenConstellations={() => openModal("constellations")}
-                onOpenLoad={() => openModal("load")}
-                onOpenExit={() => openModal("exit")}
-                onOpenHelp={() => openModal("help")}
-                onOpenSave={() => openModal("save")}
-                onOpenLanguage={() => openModal("language")}
-            />
-
+            {loading && (
+                <div className="loading-overlay">
+                    <h2 className="loading-text">LoAdInG mAp...</h2>
+                </div>
+            )}
+            <div style={{ display: loading ? "none" : "block" }}>
+                <TopMenu 
+                    onOpenGridModal={() => openModal("grid")}
+                    onOpenAbout={() => openModal("about")}
+                    onOpenConstellations={() => openModal("constellations")}
+                    onOpenLoad={() => openModal("load")}
+                    onOpenExit={() => openModal("exit")}
+                    onOpenHelp={() => openModal("help")}
+                    onOpenSave={() => openModal("save")}
+                    onOpenLanguage={() => openModal("language")}
+                />
+            </div>
             <ConstellationsModal
                 open={modals.constellations}
                 onClose={() => closeModal("constellations")}
                 onApply={setConstellations}
             />
-
             <AboutModal
                 open={modals.about}
                 onClose={() => closeModal("about")}
             />
-
             <GridModal
                 open={modals.grid}
                 onClose={() => closeModal("grid")}
                 onSelect={setGridType}
             />
-
             <LoadModal
                 open={modals.load}
                 onClose={() => closeModal("load")}
             />
-
             <ExitModal
                 open={modals.exit}
                 onCancel={() => closeModal("exit")}
                 onConfirm={handleExit}
             />
-
             <HelpModal
                 open={modals.help}
                 onClose={() => closeModal("help")}
             />
-
             <SaveModal
                 isOpen={modals.save}
                 onClose={() => closeModal("save")}
@@ -116,7 +117,6 @@ export default function App() {
                     console.log("EXPORT CONFIG:", data);
                 }}
             />
-
             <LanguageModal
                 isOpen={modals.language}
                 currentLanguage={language}
@@ -126,11 +126,11 @@ export default function App() {
                     closeModal("language");
                 }}
             />
-
             <SkyCanvas
                 gridType={gridType}
                 constellations={constellations}
                 setHelpOpen={() => openModal("help")}
+                stars={stars}
             />
         </div>
     );

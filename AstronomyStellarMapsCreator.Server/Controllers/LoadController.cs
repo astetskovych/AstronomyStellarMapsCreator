@@ -25,5 +25,15 @@
             var categories = await _repository.GetCategoriesAsync();
             return Ok(categories);
         }
+
+        [HttpGet("cats/search")]
+        public async Task<IActionResult> Search(
+        [FromQuery] string? name,
+        [FromQuery] int? categoryId,
+        [FromQuery] string? key)
+        {
+            var cats = await _repository.GetCatsFilteredAsync(name, categoryId, key);
+            return Ok(cats);
+        }
     }
 }
